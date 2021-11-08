@@ -1,0 +1,28 @@
+body {
+    background-color: rgb(146, 252, 217);
+}
+
+h1 {
+    color: crimson;
+    background-color: rgb(10, 202, 138);
+}
+
+#timer {
+    float: right;
+    margin-right: 100;
+    color: rgb(88, 4, 95);
+    font-size: medium;
+}
+
+#score {
+    float: left;
+    margin-left : 100;
+    color: rgb(88, 4, 95);
+    font-size: medium;
+}
+
+p {
+    color: black;
+    font-weight: 600;
+    font-size: medium;
+}
