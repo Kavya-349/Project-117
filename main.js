@@ -13,14 +13,26 @@ var drawn_sketch = "";
 var answer_holder = "";
 var score = 0;
 
+function preload() {
+    classifier = ml5.imageClassifier('DoodleNet');
+}
+
 function setup() {
     canvas = createCanvas(280,280);
     canvas.center();
     background("white");
+
+    canvas.mouseReleased(classifyCanvas);
 }
 
 function draw() {
     check_sketch();
+
+    strokeWeight(15);
+    stroke("black");
+    if(mouseIsPressed) {
+        line(pmouseX, pmouseY, mouseX, mouseY);
+    }
 
     if(drawn_sketch == sketch) {
         answer_holder = "yes";
@@ -32,15 +44,14 @@ function draw() {
 function updateCanvas() {
     background("white");
 
-    console.log(quick_draw_data_set[random_no]);
     sketch = quick_draw_data_set[random_no];
     document.getElementById("to_draw_sketch").innerHTML = "Sketch to be drawn - " + sketch;
 }
 
 function check_sketch() {
     timer_counter = timer_counter + 1;
-    document.getElementById("timer").innerHTML = timer_counter;
     console.log(timer_counter);
+    document.getElementById("timer").innerHTML = "Timer: " + timer_counter;
 
     if(timer_counter >= 400) {
         timer_counter = 0;
@@ -50,5 +61,21 @@ function check_sketch() {
         timer_check = "";
         answer_holder = "";
         updateCanvas();
+    }
+}
+
+function classifyCanvas() {
+    classifier.classify(canvas, gotResult);
+}
+
+function gotResult(error, results) {
+    if(error) {
+        console.error(error);
+    }
+    else {
+        console.log(results);
+        drawn_sketch = results[0].label;
+        document.getElementById("sketch_drawn").innerHTML = "Your Sketch - " + drawn_sketch;
+
     }
 }
